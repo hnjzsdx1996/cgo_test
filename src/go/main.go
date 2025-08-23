@@ -1,19 +1,23 @@
 package main
 
-/*
-#cgo CFLAGS: -I../cpp
-#cgo LDFLAGS: -L../cpp/build -lhello_lib -lstdc++
-#include "hello.h"
-*/
-import "C"
-
 import "fmt"
 
 func main() {
-	fmt.Println("Go程序开始运行...")
+	fmt.Println("Go start")
 
-	// 调用C++库中的函数
-	C.printHelloWorld()
+	// 创建HelloLib实例
+	lib := NewHelloLib()
 
-	fmt.Println("Go程序运行完成!")
+	// 显示库信息
+	fmt.Printf("库信息: %s\n", lib.GetLibraryInfo())
+
+	// 调用基本方法
+	fmt.Println("\n调用基本方法:")
+	lib.PrintHelloWorld()
+
+	// 调用带时间戳的方法
+	fmt.Println("\n调用带时间戳的方法:")
+	lib.PrintHelloWorldWithTimestamp()
+
+	fmt.Println("\nGo程序运行完成！")
 }
