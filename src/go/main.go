@@ -11,6 +11,11 @@ func main() {
 	// 调用基本方法
 	fmt.Println("调用基本方法:")
 	lib.PrintHelloWorld()
+	fmt.Println()
+
+	fmt.Println("参数传递:")
+	lib.PrintAny("hello any")
+	fmt.Println()
 
 	fmt.Println("Go程序运行完成！")
 }

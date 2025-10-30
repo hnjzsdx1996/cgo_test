@@ -8,6 +8,8 @@ extern "C" {
 // 暴露的函数：输出helloworld
 void printHelloWorld();
 
+void printAny(const char* s);
+
 #ifdef __cplusplus
 }
 #endif
