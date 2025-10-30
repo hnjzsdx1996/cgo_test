@@ -19,6 +19,12 @@ type HelloLib interface {
 
 	// PassSdkConfig 传递SDK配置
 	PassSdkConfig(SdkConfig)
+
+	// GetGlobalConfig 获取全局配置
+	GetGlobalConfig() SdkConfig
+
+	// Add 加法
+	Add(int, int) int
 }
 
 // cppHelloLib 实现了HelloLib接口，内部调用C++库
@@ -57,4 +63,18 @@ type SdkConfig struct {
 	LogLevel int
 	LogPath  string
 	Url      string
+}
+
+func (h *cppHelloLib) Add(a, b int) int {
+	return int(C.add(C.int(a), C.int(b)))
+}
+
+func (h *cppHelloLib) GetGlobalConfig() SdkConfig {
+	var cConfig C.struct_SdkConfig
+	C.getGlobalConfig((*C.struct_SdkConfig)(unsafe.Pointer(&cConfig)))
+	return SdkConfig{
+		LogLevel: int(cConfig.log_level),
+		LogPath:  C.GoString(cConfig.log_path),
+		Url:      C.GoString(cConfig.url),
+	}
 }

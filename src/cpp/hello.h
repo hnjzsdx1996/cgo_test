@@ -18,6 +18,10 @@ struct SdkConfig{
 
 void passSdkConfig(struct SdkConfig config);
 
+void getGlobalConfig(struct SdkConfig* out);
+
+int add(int a, int b);
+
 #ifdef __cplusplus
 }
 #endif

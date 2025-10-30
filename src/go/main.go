@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 func main() {
 	fmt.Println("Go start")
@@ -23,6 +26,15 @@ func main() {
 		LogPath:  "log_path",
 		Url:      "url",
 	})
+	fmt.Println()
+
+	fmt.Println("获取全局配置:")
+	b, _ := json.MarshalIndent(lib.GetGlobalConfig(), "", "  ")
+	fmt.Println(string(b))
+	fmt.Println()
+
+	fmt.Println("加法:")
+	fmt.Println(lib.Add(1, 2))
 	fmt.Println()
 
 	fmt.Println("Go程序运行完成！")
