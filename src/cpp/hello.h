@@ -10,6 +10,14 @@ void printHelloWorld();
 
 void printAny(const char* s);
 
+struct SdkConfig{
+    int log_level;
+    const char* log_path;
+    const char* url;
+};
+
+void passSdkConfig(struct SdkConfig config);
+
 #ifdef __cplusplus
 }
 #endif

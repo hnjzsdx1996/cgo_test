@@ -17,5 +17,13 @@ func main() {
 	lib.PrintAny("hello any")
 	fmt.Println()
 
+	fmt.Println("参数传递:")
+	lib.PassSdkConfig(SdkConfig{
+		LogLevel: 1,
+		LogPath:  "log_path",
+		Url:      "url",
+	})
+	fmt.Println()
+
 	fmt.Println("Go程序运行完成！")
 }
