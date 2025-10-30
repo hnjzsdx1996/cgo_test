@@ -26,7 +26,7 @@ echo "开始运行Go程序..."
 # 设置库路径环境变量
 export LD_LIBRARY_PATH=../cpp/build:$LD_LIBRARY_PATH
 
-# 运行Go程序
-go run main.go
+# 运行Go程序（包含当前目录下的所有Go文件）
+go run .
 
 echo "程序运行完成！"

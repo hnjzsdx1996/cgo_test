@@ -1,2 +1,5 @@
-.idea
+/.cache
+/.idea
+/.vscode
+/build
 
