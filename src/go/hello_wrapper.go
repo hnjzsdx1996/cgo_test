@@ -5,9 +5,18 @@ package main
 #cgo LDFLAGS: -L../cpp/build -lhello_lib -lstdc++
 #include "hello.h"
 #include <stdlib.h>
+
+// 声明一个回调类型，便于从 Go 传入 C 的函数指针
+typedef void (*SdkConfigCallback)(struct SdkConfig);
+
+// 声明一个由 Go 实现、供 C 调用的回调入口
+void callbackGo(struct SdkConfig cfg);
 */
 import "C"
-import "unsafe"
+import (
+	"fmt"
+	"unsafe"
+)
 
 // HelloLib 定义了一个接口，用于包装C++库的功能
 type HelloLib interface {
@@ -16,6 +25,9 @@ type HelloLib interface {
 
 	// PrintAny 输出任意字符串
 	PrintAny(string)
+
+	// SetGlobalConfigCallback 设置在 C++ 更新配置时的回调
+	SetGlobalConfigCallback(func(SdkConfig))
 
 	// PassSdkConfig 传递SDK配置
 	PassSdkConfig(SdkConfig)
@@ -77,4 +89,23 @@ func (h *cppHelloLib) GetGlobalConfig() SdkConfig {
 		LogPath:  C.GoString(cConfig.log_path),
 		Url:      C.GoString(cConfig.url),
 	}
+}
+
+var goConfigCallback func(SdkConfig)
+
+//export callbackGo
+func callbackGo(c C.struct_SdkConfig) {
+	fmt.Println("callbackGo called")
+	if goConfigCallback != nil {
+		goConfigCallback(SdkConfig{
+			LogLevel: int(c.log_level),
+			LogPath:  C.GoString(c.log_path),
+			Url:      C.GoString(c.url),
+		})
+	}
+}
+
+func (h *cppHelloLib) SetGlobalConfigCallback(cb func(SdkConfig)) {
+	goConfigCallback = cb
+	C.setGlobalConfigCallback((C.SdkConfigCallback)(C.callbackGo))
 }

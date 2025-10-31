@@ -22,6 +22,8 @@ void getGlobalConfig(struct SdkConfig* out);
 
 int add(int a, int b);
 
+void setGlobalConfigCallback(void (*callback)(struct SdkConfig));
+
 #ifdef __cplusplus
 }
 #endif

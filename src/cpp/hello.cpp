@@ -7,6 +7,9 @@ static std::string g_log_path;
 static std::string g_url;
 static int g_log_level = 0;
 
+// 回调指针
+static void (*g_config_callback)(struct SdkConfig) = nullptr;
+
 void printHelloWorld() {
     std::cout << "helloworld" << std::endl;
 }
@@ -27,6 +30,15 @@ void passSdkConfig(struct SdkConfig config) {
     g_log_level = config.log_level;
     g_log_path = log_path_copy;
     g_url = url_copy;
+
+    // 触发回调（如果已注册）
+    if (g_config_callback) {
+        struct SdkConfig out;
+        out.log_level = g_log_level;
+        out.log_path = g_log_path.c_str();
+        out.url = g_url.c_str();
+        g_config_callback(out);
+    }
 }
 
 void getGlobalConfig(struct SdkConfig* out) {
@@ -34,6 +46,10 @@ void getGlobalConfig(struct SdkConfig* out) {
     out->log_level = g_log_level;
     out->log_path = g_log_path.c_str();
     out->url = g_url.c_str();
+}
+
+void setGlobalConfigCallback(void (*callback)(struct SdkConfig)) {
+    g_config_callback = callback;
 }
 
 int add(int a, int b) {
